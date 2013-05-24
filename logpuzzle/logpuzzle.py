@@ -24,27 +24,15 @@ def read_urls(filename):
   extracting the hostname from the filename itself.
   Screens out duplicate urls and returns the urls sorted into
   increasing order."""
-  # +++your code here: animal puzzle+++
-  # fp = open(filename)
-  # url_pat = re.compile("_(.*)")
-  # url_so = url_pat.search(filename)
-  # url_base = ""
-  # if url_so:
-  #   url_base = "http://" + url_so.group(1)
+  # +++your code here+++
+  def url_sort_key(url):
+    word_pat = re.compile("/.*-\w+-(\w+)\.\w+")
+    so = word_pat.search(url)
+    if so:
+      return so.group(1)
+    else:
+      return url
 
-  # get_pat = re.compile("GET (.*puzzle.*) HTTP")
-  # img_urls = set()
-  # for line in fp:
-  #   so = get_pat.search(line)
-  #   if so:
-  #     img_urls.add(url_base + so.group(1))
-
-  # fp.close()  
-  # urls = list(img_urls)
-  # urls.sort()
-  # return urls
-
-  # +++place puzzle; lazy copy paste for testing+++
   fp = open(filename)
   url_pat = re.compile("_(.*)")
   url_so = url_pat.search(filename)
@@ -61,11 +49,8 @@ def read_urls(filename):
       img_urls.add(url_base + so.group(1))
 
   fp.close()  
-  urls = list(img_urls)
-
-  word_pat = re.compile("/.*-\w+-(\w+)\.\w+")
-  sorted(urls, key = lambda url: word_pat.search(url).group(1))
-  return urls
+  urls = list(img_urls)  
+  return sorted(urls, key = lambda url: url_sort_key(url))
   
 
 def download_images(img_urls, dest_dir):
